@@ -46,12 +46,39 @@ function initializeNavigation() {
             const targetSection = document.querySelector(targetId);
 
             if (targetSection) {
+                // Видалити активний клас з усіх посилань
+                navLinks.forEach(navLink => navLink.classList.remove('active'));
+
+                // Додати активний клас до поточного посилання
+                this.classList.add('active');
+
                 smoothScrollTo(targetSection);
 
                 // Закрити мобільне меню після кліку
                 if (isMenuOpen) {
                     toggleMobileMenu();
                 }
+            }
+        });
+    });
+
+    // Встановити активний стан при прокрутці
+    window.addEventListener('scroll', function() {
+        let current = '';
+        const sections = document.querySelectorAll('section[id]');
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (scrollY >= (sectionTop - 200)) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + current) {
+                link.classList.add('active');
             }
         });
     });
@@ -372,39 +399,106 @@ function typeWriter(element, text, speed = 50) {
     type();
 }
 
-// Генерація випадкових частинок
-function createFloatingParticle() {
-    const particle = document.createElement('div');
-    particle.style.position = 'fixed';
-    particle.style.width = Math.random() * 4 + 2 + 'px';
-    particle.style.height = particle.style.width;
-    particle.style.background = `rgba(99, 102, 241, ${Math.random() * 0.5 + 0.2})`;
-    particle.style.borderRadius = '50%';
-    particle.style.left = Math.random() * window.innerWidth + 'px';
-    particle.style.top = window.innerHeight + 'px';
-    particle.style.pointerEvents = 'none';
-    particle.style.zIndex = '-1';
+// Генерація космічних частинок (зірок)
+function createSpaceStar() {
+    const star = document.createElement('div');
+    star.style.position = 'fixed';
+    star.style.width = Math.random() * 3 + 1 + 'px';
+    star.style.height = star.style.width;
+    star.style.background = '#ffffff';
+    star.style.borderRadius = '50%';
+    star.style.left = Math.random() * window.innerWidth + 'px';
+    star.style.top = '-10px';
+    star.style.pointerEvents = 'none';
+    star.style.zIndex = '-1';
+    star.style.boxShadow = `0 0 ${Math.random() * 10 + 5}px rgba(255, 255, 255, 0.8)`;
 
-    document.body.appendChild(particle);
+    document.body.appendChild(star);
 
-    // Анімація руху вгору
-    const duration = Math.random() * 3000 + 2000;
-    const animation = particle.animate([
-        { transform: 'translateY(0px)', opacity: 0 },
-        { transform: 'translateY(-20px)', opacity: 1, offset: 0.1 },
-        { transform: `translateY(-${window.innerHeight + 100}px)`, opacity: 0 }
+    // Анімація падіння зірки
+    const duration = Math.random() * 4000 + 3000;
+    const horizontalMove = Math.random() * 200 - 100;
+
+    const animation = star.animate([
+        {
+            transform: 'translateY(-10px) translateX(0px)',
+            opacity: 0
+        },
+        {
+            transform: 'translateY(20px) translateX(10px)',
+            opacity: 1,
+            offset: 0.1
+        },
+        {
+            transform: `translateY(${window.innerHeight + 50}px) translateX(${horizontalMove}px)`,
+            opacity: 0
+        }
     ], {
         duration: duration,
         easing: 'linear'
     });
 
     animation.onfinish = () => {
-        particle.remove();
+        star.remove();
     };
 }
 
-// Запуск генерації частинок
-setInterval(createFloatingParticle, 2000);
+// Генерація комет
+function createComet() {
+    const comet = document.createElement('div');
+    comet.style.position = 'fixed';
+    comet.style.width = '3px';
+    comet.style.height = '3px';
+    comet.style.background = '#ffffff';
+    comet.style.borderRadius = '50%';
+    comet.style.left = '-50px';
+    comet.style.top = Math.random() * (window.innerHeight * 0.7) + 'px';
+    comet.style.pointerEvents = 'none';
+    comet.style.zIndex = '-1';
+    comet.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.9)';
+
+    // Хвіст комети
+    const tail = document.createElement('div');
+    tail.style.position = 'absolute';
+    tail.style.width = '80px';
+    tail.style.height = '2px';
+    tail.style.background = 'linear-gradient(to right, rgba(255, 255, 255, 0.8), transparent)';
+    tail.style.top = '1px';
+    tail.style.left = '-80px';
+    tail.style.transform = 'rotate(-20deg)';
+    comet.appendChild(tail);
+
+    document.body.appendChild(comet);
+
+    // Анімація польоту комети
+    const duration = Math.random() * 2000 + 1500;
+    const animation = comet.animate([
+        {
+            transform: 'translateX(-50px) translateY(0px)',
+            opacity: 0
+        },
+        {
+            transform: 'translateX(50px) translateY(-20px)',
+            opacity: 1,
+            offset: 0.2
+        },
+        {
+            transform: `translateX(${window.innerWidth + 100}px) translateY(-${Math.random() * 200 + 100}px)`,
+            opacity: 0
+        }
+    ], {
+        duration: duration,
+        easing: 'ease-out'
+    });
+
+    animation.onfinish = () => {
+        comet.remove();
+    };
+}
+
+// Запуск генерації космічних ефектів
+setInterval(createSpaceStar, 800);
+setInterval(createComet, 4000);
 
 // ===== ОБРОБКА ПОМИЛОК ТА ВІДЛАДКА =====
 window.addEventListener('error', function(e) {
