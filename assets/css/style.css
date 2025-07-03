@@ -46,14 +46,19 @@
 
 html {
     scroll-behavior: smooth;
+    height: 100%;
 }
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg-primary);
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+    margin: 0;
+    padding: 0;
 }
 
 /* ===== КОСМІЧНИЙ АНІМОВАНИЙ ФОН ===== */
@@ -61,123 +66,109 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     z-index: -1;
     background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
     overflow: hidden;
 }
 
-/* Зорі на фоні */
+/* Додатковий фон для покриття всієї сторінки */
+.animated-background::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200vh;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    z-index: -2;
+}
+
+/* Реалістичні зорі на фоні */
 .floating-particles {
     position: absolute;
     width: 100%;
     height: 100%;
     background-image:
-        radial-gradient(1px 1px at 20px 30px, #ffffff, transparent),
-        radial-gradient(1px 1px at 40px 70px, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.6), transparent),
-        radial-gradient(1px 1px at 130px 80px, #ffffff, transparent),
-        radial-gradient(1px 1px at 160px 30px, rgba(255, 255, 255, 0.7), transparent),
-        radial-gradient(2px 2px at 90px 150px, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(1px 1px at 200px 120px, #ffffff, transparent),
-        radial-gradient(1px 1px at 250px 60px, rgba(255, 255, 255, 0.8), transparent);
+        /* Великі яскраві зорі */
+        radial-gradient(3px 3px at 20px 30px, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.4) 40%, transparent 70%),
+        radial-gradient(2.5px 2.5px at 130px 80px, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.5) 35%, transparent 65%),
+        radial-gradient(3.5px 3.5px at 90px 150px, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.6) 25%, transparent 55%),
+        radial-gradient(2px 2px at 200px 40px, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3) 45%, transparent 75%),
+
+        /* Середні зорі */
+        radial-gradient(1.5px 1.5px at 40px 70px, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2) 50%, transparent 80%),
+        radial-gradient(1.8px 1.8px at 90px 40px, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.15) 40%, transparent 70%),
+        radial-gradient(1.6px 1.6px at 200px 120px, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.25) 45%, transparent 75%),
+        radial-gradient(1.4px 1.4px at 50px 200px, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1) 40%, transparent 70%),
+
+        /* Малі зорі */
+        radial-gradient(1px 1px at 160px 30px, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.1) 50%, transparent 80%),
+        radial-gradient(0.8px 0.8px at 250px 60px, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.08) 60%, transparent 90%),
+        radial-gradient(1.2px 1.2px at 180px 180px, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.12) 50%, transparent 80%),
+        radial-gradient(0.9px 0.9px at 70px 110px, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.05) 55%, transparent 85%),
+
+        /* Кольорові зорі для різноманітності */
+        radial-gradient(1.5px 1.5px at 150px 170px, rgba(99, 102, 241, 0.8), rgba(99, 102, 241, 0.2) 40%, transparent 70%),
+        radial-gradient(1.2px 1.2px at 220px 100px, rgba(139, 92, 246, 0.7), rgba(139, 92, 246, 0.15) 45%, transparent 75%),
+        radial-gradient(1px 1px at 30px 140px, rgba(6, 182, 212, 0.6), rgba(6, 182, 212, 0.1) 50%, transparent 80%);
     background-repeat: repeat;
-    background-size: 300px 300px;
-    animation: stars-twinkle 4s ease-in-out infinite alternate;
+    background-size: 280px 280px;
+    animation: stars-twinkle 8s ease-in-out infinite alternate;
 }
 
-@keyframes stars-twinkle {
-    0% { opacity: 0.7; }
-    100% { opacity: 1; }
-}
-
-/* Падаючі зорі */
-.grid-overlay {
+/* Додаємо другий шар зірок для більшої густини */
+.floating-particles::before {
+    content: '';
     position: absolute;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    background-image:
+        radial-gradient(1px 1px at 60px 50px, rgba(255, 255, 255, 0.4), transparent 60%),
+        radial-gradient(0.8px 0.8px at 120px 90px, rgba(255, 255, 255, 0.3), transparent 70%),
+        radial-gradient(1.2px 1.2px at 190px 140px, rgba(255, 255, 255, 0.5), transparent 50%),
+        radial-gradient(0.9px 0.9px at 240px 20px, rgba(255, 255, 255, 0.35), transparent 65%),
+        radial-gradient(1.1px 1.1px at 10px 180px, rgba(255, 255, 255, 0.45), transparent 55%);
+    background-repeat: repeat;
+    background-size: 280px 280px;
+    animation: stars-twinkle-2 10s ease-in-out infinite alternate;
+    animation-delay: -2s;
 }
 
-.grid-overlay::before,
-.grid-overlay::after {
-    content: '';
-    position: absolute;
-    width: 2px;
-    height: 100px;
-    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.8), transparent);
-    animation: shooting-star 3s linear infinite;
-}
-
-.grid-overlay::before {
-    top: -100px;
-    left: 20%;
-    animation-delay: 0s;
-}
-
-.grid-overlay::after {
-    top: -100px;
-    left: 80%;
-    animation-delay: 1.5s;
-}
-
-@keyframes shooting-star {
+@keyframes stars-twinkle {
     0% {
-        transform: translateY(-100px) translateX(0);
-        opacity: 0;
+        opacity: 0.6;
+        transform: scale(0.95);
     }
-    10% {
-        opacity: 1;
-    }
-    90% {
-        opacity: 1;
+    50% {
+        opacity: 0.9;
+        transform: scale(1.02);
     }
     100% {
-        transform: translateY(calc(100vh + 100px)) translateX(-200px);
-        opacity: 0;
+        opacity: 1;
+        transform: scale(1);
     }
 }
 
-/* Додаткові падаючі зорі */
-.animated-background::before,
-.animated-background::after {
-    content: '';
-    position: absolute;
-    width: 1px;
-    height: 80px;
-    background: linear-gradient(to bottom, transparent, rgba(99, 102, 241, 0.8), transparent);
-    animation: shooting-star-2 4s linear infinite;
-}
-
-.animated-background::before {
-    top: -80px;
-    left: 60%;
-    animation-delay: 2s;
-}
-
-.animated-background::after {
-    top: -80px;
-    left: 30%;
-    animation-delay: 3.5s;
-}
-
-@keyframes shooting-star-2 {
+@keyframes stars-twinkle-2 {
     0% {
-        transform: translateY(-80px) translateX(0);
-        opacity: 0;
+        opacity: 0.3;
+        transform: scale(0.9);
     }
-    15% {
-        opacity: 1;
-    }
-    85% {
-        opacity: 1;
+    50% {
+        opacity: 0.7;
+        transform: scale(1.05);
     }
     100% {
-        transform: translateY(calc(100vh + 80px)) translateX(-150px);
-        opacity: 0;
+        opacity: 0.5;
+        transform: scale(0.98);
     }
 }
+
+
+
+
 /* Додаткові космічні ефекти */
 .space-nebula {
     position: absolute;
@@ -227,57 +218,7 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-/* Комети */
-.comet {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: #ffffff;
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-}
 
-.comet::before {
-    content: '';
-    position: absolute;
-    width: 100px;
-    height: 2px;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0.8), transparent);
-    top: 1px;
-    left: -100px;
-    transform: rotate(-30deg);
-}
-
-.comet:nth-child(1) {
-    top: 10%;
-    left: -10px;
-    animation: comet-fly 6s linear infinite;
-    animation-delay: 0s;
-}
-
-.comet:nth-child(2) {
-    top: 60%;
-    left: -10px;
-    animation: comet-fly 8s linear infinite;
-    animation-delay: 3s;
-}
-
-@keyframes comet-fly {
-    0% {
-        transform: translateX(-10px) translateY(0);
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-    }
-    90% {
-        opacity: 1;
-    }
-    100% {
-        transform: translateX(calc(100vw + 100px)) translateY(-200px);
-        opacity: 0;
-    }
-}
 
 /* ===== ЗАГАЛЬНІ КОМПОНЕНТИ ===== */
 .container {
@@ -637,7 +578,7 @@ body {
 /* ===== FEATURES СЕКЦІЯ ===== */
 .features {
     padding: 8rem 0;
-    background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    background: transparent;
 }
 
 .features-grid {
@@ -713,7 +654,7 @@ body {
 /* ===== FAQ СЕКЦІЯ ===== */
 .faq {
     padding: 8rem 0;
-    background: var(--bg-secondary);
+    background: transparent;
 }
 
 .faq-container {
@@ -789,7 +730,8 @@ body {
 
 /* ===== FOOTER ===== */
 .footer {
-    background: var(--bg-tertiary);
+    background: rgba(15, 15, 35, 0.8);
+    backdrop-filter: blur(20px);
     padding: 4rem 0 2rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
